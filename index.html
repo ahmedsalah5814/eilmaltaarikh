@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكتبة النخبة | حماية القراءة</title>
+    <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --paper-dark: #1a1a1a;
+            --accent-gold: #c5a059;
+            --text-main: #d1d1d1;
+            --text-muted: #777;
+            --border-color: #2a2a2a;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Amiri', serif;
+            margin: 0;
+            line-height: 1.8;
+            user-select: none; /* منع تحديد النصوص */
+        }
+
+        header {
+            padding: 3rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            background: linear-gradient(to bottom, #161616, #0f0f0f);
+        }
+
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            color: var(--accent-gold);
+            margin: 0;
+            letter-spacing: 3px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            color: var(--accent-gold);
+            border-bottom: 2px solid var(--accent-gold);
+            display: inline-block;
+            margin-bottom: 40px;
+            font-size: 1.8rem;
+        }
+
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 40px;
+        }
+
+        .book-card {
+            background: var(--paper-dark);
+            padding: 15px;
+            border-radius: 8px;
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 1px solid var(--border-color);
+            text-align: center;
+        }
+
+        .book-card:hover {
+            transform: translateY(-15px);
+            border-color: var(--accent-gold);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.7);
+        }
+
+        .book-cover {
+            width: 100%;
+            height: 280px;
+            background: #252525;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--accent-gold);
+            font-weight: bold;
+            margin-bottom: 15px;
+            border-radius: 4px;
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+        }
+
+        .book-title {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+        }
+
+        .book-author {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* واجهة القراءة */
+        #reader-view {
+            display: none;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 2000;
+        }
+
+        .reader-container {
+            width: 95%;
+            height: 95vh;
+            margin: 2.5vh auto;
+            display: flex;
+            flex-direction: column;
+            background: #000;
+        }
+
+        .reader-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: #111;
+            border-bottom: 1px solid var(--accent-gold);
+        }
+
+        #pdf-frame {
+            flex-grow: 1;
+            width: 100%;
+            border: none;
+        }
+
+        .close-btn {
+            background: var(--accent-gold);
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 4px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 50px;
+            border-top: 1px solid var(--border-color);
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+<body oncontextmenu="return false;"> <header>
+        <h1 class="logo">مكتبة علم التاريخ</h1>
+        <p style="color: var(--accent-gold);">لمعرفة الطريق الصحيح</p>
+        <p style="color: var(--accent-gold);">اللهم صلي وسلم على محمد وعلى آله وصحبه اجمعين اللهم امين يارب العالمين</p>
+    </header>
+
+    <div class="container">
+        <h2 class="section-title">مؤلفات مختارة</h2>
+        
+        <div class="book-grid">
+            <div class="book-card" onclick="openPDF('بروتوكولات حكماء صهيون', '1.pdf')">
+                <div class="book-cover">بروتوكولات حكماء صهيون</div>
+                <span class="book-title">بروتوكولات حكماء صهيون</span>
+                <span class="book-author">منصور عبد الحكيم</span>
+            </div>
+
+            <div class="book-card" onclick="openPDF('موسوعة احاديث اخر الزمان ', '2.pdf')">
+                <div class="book-cover">موسوعة احاديث اخر الزمان </div>
+                <span class="book-title">موسوعة احاديث اخر الزمان </span>
+                <span class="book-author">نور الحلبي</span>
+            </div>
+
+            <div class="book-card" onclick="openPDF('شرح معاني أسماء الله الحسنى', '3.pdf')">
+                <div class="book-cover">شرح معاني أسماء الله الحسنى</div>
+                <span class="book-title">شرح معاني أسماء الله الحسنى</span>
+                <span class="book-author">ابو العباس</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="reader-view">
+        <div class="reader-container">
+            <div class="reader-header">
+                <span id="pdf-title" style="color: var(--accent-gold); font-size: 1.2rem;"></span>
+                <button class="close-btn" onclick="closeReader()">إغلاق الكتاب ×</button>
+            </div>
+            <iframe id="pdf-frame" src="" allow="autoplay"></iframe>
+        </div>
+    </div>
+
+    <footer>
+        <p>© 2026 مكتبة علم التاريخ - جميع الحقوق محفوظة</p>
+    </footer>
+
+    <script>
+        // دالة فتح الملف
+        function openPDF(title, url) {
+            document.getElementById('pdf-title').innerText = title;
+            
+            // إضافة معاملات لإخفاء الأدوات (Toolbar=0)
+            // ملاحظة: المتصفحات الحديثة قد تظهر شريط الأدوات عند تحريك الفأرة للأعلى كإجراء أمني
+            const protectedUrl = url + "#toolbar=0&navpanes=0&scrollbar=1&view=FitH";
+            
+            const frame = document.getElementById('pdf-frame');
+            frame.src = protectedUrl;
+            
+            document.getElementById('reader-view').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // دالة إغلاق القارئ
+        function closeReader() {
+            document.getElementById('reader-view').style.display = 'none';
+            document.getElementById('pdf-frame').src = ""; // تفريغ الذاكرة
+            document.body.style.overflow = 'auto';
+        }
+
+        // زيادة الحماية: منع اختصارات لوحة المفاتيح (F12, Ctrl+U, Ctrl+S)
+        document.onkeydown = function(e) {
+            if (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 83 || e.keyCode === 73)) {
+                return false;
+            }
+            if (e.keyCode === 123) { // F12
+                return false;
+            }
+        };
+    </script>
+
+</body>
+</html>
